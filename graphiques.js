@@ -1,5 +1,10 @@
+import Chart from 'chart.js';
+var _ = require('lodash');
+
 window.onload = async function () {
   let donnees = await importer();
+  console.log(donnees);
+  donnees = _.groupBy(_.flatten(donnees.values), function (x) { return x; })
   console.log(donnees);
 }
 
