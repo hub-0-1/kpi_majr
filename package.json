@@ -20,7 +20,7 @@
     "webpack-cli": "^4.2.0"
   },
   "scripts": {
-    "build": "nodemon --exec 'webpack --config webpack.config.js' -e js,less --watch .",
+    "build": "nodemon --exec 'webpack --config webpack.config.js' -e js,less --ignore dist/ --watch .",
     "build-production": "webpack --config webpack.production.config.js"
   },
   "repository": {
