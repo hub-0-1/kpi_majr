@@ -1,0 +1,35 @@
+{
+  "name": "kpi_majr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "graphiques.js",
+  "dependencies": {
+    "chart.js": "^2.9.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.10",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.0.1",
+    "less": "^3.13.0",
+    "less-loader": "^7.1.0",
+    "nodemon": "^2.0.6",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.10.0",
+    "webpack-cli": "^4.2.0"
+  },
+  "scripts": {
+    "build": "nodemon --exec 'webpack --config webpack.config.js' -e js,less --watch src",
+    "build-production": "webpack --config webpack.production.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hub-0-1/kpi_majr.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hub-0-1/kpi_majr/issues"
+  },
+  "homepage": "https://github.com/hub-0-1/kpi_majr#readme"
+}
