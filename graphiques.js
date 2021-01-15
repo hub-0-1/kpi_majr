@@ -7,7 +7,28 @@ window.onload = async function () {
   let valeurs = donnees.slice(1);
 
   let avancement_objectifs = _.groupBy(_.flatten(valeurs.map(x => x.slice(3))));
-  console.log(avancement_objectifs);
+
+  let canvas = document.createElement('canvas');
+  var myDoughnutChart = new Chart(canvas.getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(avancement_objectifs),
+      datasets: [{
+        label: '# of Votes',
+        data: _.map(avancement_objectifs, (value, key) => { return value.length }),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+      }]
+    }
+  });
+
+  document.body.appendChild(canvas);
 }
 
 async function importer () {
