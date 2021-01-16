@@ -1,11 +1,49 @@
 import Chart from 'chart.js';
 var _ = require('lodash');
 
+import './timeline.sass';
+
 window.onload = async function () {
   let donnees = await importer();
-  let entetes = donnees.slice(0, 1);
-  let valeurs = donnees.slice(1);
 
+  afficher_pourcentages(donnees.phase1);
+  afficher_timeline(donnees.priorisation);
+}
+
+function afficher_timeline (donnees) {
+  let el_timeline = document.getElementById("timeline-elements");
+  let el_descriptions = document.getElementById("timeline-descriptions-wrapper");
+
+  _.each(donnees.slice(1), (organisme) => {
+    console.log(organisme);
+    let input = document.createElement("input");
+    input.type = "radio";
+    input.name = "timeline-dot";
+    input.setAttribute("data-description", organisme[3]);
+    console.log(input);
+
+    let div = document.createElement("div");
+    div.className = "dot-info";
+    div.setAttribute("data-description", organisme[3]);
+    div.innetHTML = `
+      <span class="year">${organisme[3]}</span>
+      <span class="label">${organisme[1]}</span>
+    `;
+
+    let p = document.createElement("p");
+    p.setAttribute("data-description", organisme[3]);
+    p.innerHTML = organisme[0];
+
+    el_timeline.parentNode.insertBefore(input, el_timeline);
+    el_timeline.parentNode.insertBefore(div, el_timeline);
+    //el_timeline.appendChild(div);
+    el_descriptions.appendChild(p);
+  });
+}
+
+function afficher_pourcentages (donnees) {
+  //let entetes = donnees.slice(0, 1);
+  let valeurs = donnees.slice(1);
   let avancement_objectifs = _.groupBy(_.flatten(valeurs.map(x => x.slice(3))));
 
   let canvas = document.createElement('canvas');
@@ -32,7 +70,14 @@ window.onload = async function () {
 }
 
 async function importer () {
-  let response = await fetch("https://sheets.googleapis.com/v4/spreadsheets/1yTITCMmTejSxkloLJP1auk6pAcA1vtpQ8V6IZkqpFxg/values/'Phase 1'!A:L?key=AIzaSyCDbtmNllO1DY1lkrmBTjCHx_0g5Mm_gTw");
-  if(!response.ok) throw "Impossible d'accéder aux données";
-  return (await response.json()).values;
+  let phase1 = await fetch("https://sheets.googleapis.com/v4/spreadsheets/1yTITCMmTejSxkloLJP1auk6pAcA1vtpQ8V6IZkqpFxg/values/'Phase 1'!A:L?key=AIzaSyCDbtmNllO1DY1lkrmBTjCHx_0g5Mm_gTw");
+  if(!phase1.ok) throw "Impossible d'accéder aux données";
+
+  let priorisation = await fetch("https://sheets.googleapis.com/v4/spreadsheets/1yTITCMmTejSxkloLJP1auk6pAcA1vtpQ8V6IZkqpFxg/values/'Priorisation'!A:D?key=AIzaSyCDbtmNllO1DY1lkrmBTjCHx_0g5Mm_gTw");
+  if(!priorisation.ok) throw "Impossible d'accéder aux données";
+
+  return {
+    phase1: (await phase1.json()).values,
+    priorisation: (await priorisation.json()).values,
+  };
 } 
